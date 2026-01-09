@@ -6,3 +6,6 @@
 .DS_Store
 .vscode
 .idea/
+
+#Local secrets
+config.local.json
