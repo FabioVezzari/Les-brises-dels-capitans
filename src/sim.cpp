@@ -7,6 +7,7 @@
 void simulate_turn(std::vector<Ship>& ships,
                    OrdersByShip& orders,
                    const ShipClassRegistry& classes,
+                   const std::unordered_map<std::string, Wind>& wind_by_ship,
                    double dt_h,
                    double arrival_radius_nm)
 {
@@ -16,43 +17,61 @@ void simulate_turn(std::vector<Ship>& ships,
     for (auto& s : ships) {
         const auto* cls = classes.find(s.class_id);
         if (!cls) {
-            throw std::runtime_error("Unknown class_id for ship " + s.id + ": " + s.class_id);
+            throw std::runtime_error(
+                "Unknown class_id for ship " + s.id + ": " + s.class_id
+            );
         }
 
-        // kn = nm/h, dt_h = h  => remaining_nm = nm
-        double remaining_nm = cls->speed_kn * dt_h;
-        if (remaining_nm <= 0.0) continue;
+        // No wind -> cannot move
+        auto w_it = wind_by_ship.find(s.id);
+        if (w_it == wind_by_ship.end()) continue;
+        const Wind& wind = w_it->second;
 
         auto it = orders.find(s.id);
-        if (it == orders.end()) continue;        // no orders -> do nothing
+        if (it == orders.end()) continue;
 
         Route& route = it->second;
+        if (route.empty()) continue;
 
-        // Consume waypoints in order until time/distance is over
+        // Target waypoint
+        const GeoPoint target = route.front();
+
+        // Heading toward waypoint
+        const double heading_deg = bearing_deg(s.pos, target);
+
+        // True Wind Angle
+        const double twa_deg = angle_diff_0_180(wind.from_deg, heading_deg);
+
+        // Speed from polar
+        const double speed_kn =
+            cls->speed_from_polar_kn(wind.speed_kn, twa_deg);
+
+        double remaining_nm = speed_kn * dt_h;
+        if (remaining_nm <= 0.0) continue;
+
+        // ----------------------------------------------------
+        // Move toward waypoint(s)
+        // ----------------------------------------------------
         while (remaining_nm > 0.0 && !route.empty()) {
-            const GeoPoint target = route.front();
-            const double d_nm = distance_nm(s.pos, target);
+            const GeoPoint wp = route.front();
+            const double d_nm = distance_nm(s.pos, wp);
 
-            // If already "arrived", consume this waypoint and continue
             if (d_nm <= arrival_radius_nm) {
                 route.erase(route.begin());
                 continue;
             }
 
             const double step_nm = std::min(remaining_nm, d_nm);
-            s.pos = move_toward_nm(s.pos, target, step_nm);
+            s.pos = move_toward_nm(s.pos, wp, step_nm);
             remaining_nm -= step_nm;
 
-            // If we reached the waypoint after moving, consume it
-            if (distance_nm(s.pos, target) <= arrival_radius_nm) {
+            if (distance_nm(s.pos, wp) <= arrival_radius_nm) {
                 route.erase(route.begin());
             }
         }
 
-        // If route is finished, remove it from orders (clean state)
         if (route.empty()) {
-            orders.erase(s.id);   // usa la chiave, non l'iteratore
+            orders.erase(s.id);
         }
-
     }
 }

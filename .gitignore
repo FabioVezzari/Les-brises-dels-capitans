@@ -9,3 +9,6 @@
 
 #Local secrets
 config.local.json
+
+#Runtime backups
+data/_backup/

@@ -55,3 +55,27 @@ inline GeoPoint move_toward_nm(GeoPoint pos, GeoPoint target, double step_nm) {
     pos.lon_deg += rad2deg(dlon2);
     return pos;
 }
+
+
+// Bearing iniziale (gradi, 0=N, 90=E)
+inline double bearing_deg(const GeoPoint& from, const GeoPoint& to) {
+    const double lat1 = deg2rad(from.lat_deg);
+    const double lat2 = deg2rad(to.lat_deg);
+    const double dlon =  deg2rad(to.lon_deg - from.lon_deg);
+
+    const double y = std::sin(dlon) * std::cos(lat2);
+    const double x =
+        std::cos(lat1) * std::sin(lat2) -
+        std::sin(lat1) * std::cos(lat2) * std::cos(dlon);
+
+    double brng = rad2deg(std::atan2(y, x));
+    if (brng < 0.0) brng += 360.0;
+    return brng;
+}
+
+// Differenza angolare simmetrica 0..180
+inline double angle_diff_0_180(double a_deg, double b_deg) {
+    double d = std::fmod(std::fabs(a_deg - b_deg), 360.0);
+    if (d > 180.0) d = 360.0 - d;
+    return d;
+}

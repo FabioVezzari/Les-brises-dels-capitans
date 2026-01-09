@@ -1,6 +1,26 @@
 [
   {
     "id": "sloop",
-    "speed_kn": 5.0
+    "polar": [
+      { "tws_kn": 0,  "twa_deg": 0,   "max_speed_kn": 0 },
+      { "tws_kn": 0,  "twa_deg": 90,  "max_speed_kn": 0 },
+      { "tws_kn": 0,  "twa_deg": 180, "max_speed_kn": 0 },
+
+      { "tws_kn": 5,  "twa_deg": 0,   "max_speed_kn": 0 },
+      { "tws_kn": 5,  "twa_deg": 90,  "max_speed_kn": 3 },
+      { "tws_kn": 5,  "twa_deg": 180, "max_speed_kn": 4 },
+
+      { "tws_kn": 20,  "twa_deg": 0,   "max_speed_kn": 0 },
+      { "tws_kn": 20,  "twa_deg": 90,  "max_speed_kn": 11 },
+      { "tws_kn": 20,  "twa_deg": 180, "max_speed_kn": 15 },
+
+      { "tws_kn": 35,  "twa_deg": 0,   "max_speed_kn": 0 },
+      { "tws_kn": 35,  "twa_deg": 90,  "max_speed_kn": 0 },
+      { "tws_kn": 35,  "twa_deg": 180, "max_speed_kn": 0 },
+
+      { "tws_kn": 40,  "twa_deg": 0,   "max_speed_kn": 0 },
+      { "tws_kn": 40,  "twa_deg": 90,  "max_speed_kn": 0 },
+      { "tws_kn": 40,  "twa_deg": 180, "max_speed_kn": 0 }
+    ]
   }
 ]

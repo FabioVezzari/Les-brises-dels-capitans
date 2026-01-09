@@ -1,0 +1,6 @@
+{
+  "openweather": {
+    "api_key": "PUT_YOUR_KEY_HERE",
+    "units": "metric"
+  }
+}

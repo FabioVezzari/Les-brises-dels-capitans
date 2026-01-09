@@ -11,7 +11,9 @@ add_executable(les_brises
     src/sim.cpp
     src/orders.cpp
     src/state.cpp
+    src/weather.cpp
 )
+
 
 target_include_directories(les_brises PRIVATE
     include
