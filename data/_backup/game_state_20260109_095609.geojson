@@ -1,0 +1,22 @@
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          0,
+          0
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "allegiance": "Castile",
+        "class_id": "sloop",
+        "colors": "French Navy",
+        "id": "ship_001",
+        "name": "Belle Écume"
+      },
+      "type": "Feature"
+    }
+  ],
+  "type": "FeatureCollection"
+}

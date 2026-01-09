@@ -1,0 +1,19 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "ship_id": "ship_001"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [0, 0.01],
+          [0.01, 0.01],
+          [0.01, 0.02]
+        ]
+      }
+    }
+  ]
+}
